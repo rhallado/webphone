@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ctxSip - Modern UI</title>
+    <link rel="icon" type="image/gif" href="img/favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="css/ctxSip-modern.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="sipClient">
+
+<!-- Phone Container -->
+<div class="phone-container">
+    
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div id="txtRegStatus" class="reg-status"></div>
+        <div class="status-icons">
+            <button class="config-btn" id="btnConfig" title="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Phone UI -->
+    <div class="phone-screen">
+        
+        <!-- Splash Screen (Initial State) -->
+        <div id="sip-splash" class="screen-content splash-screen active">
+            <div class="avatar-container">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <h2 class="contact-name">ctxSip Phone</h2>
+            <p class="status-text">Ready to make calls</p>
+            
+            <!-- Dial Input -->
+            <div class="dial-input-container">
+                <input type="text" id="numDisplay" class="dial-input" placeholder="Enter number..." autocomplete="off" />
+            </div>
+
+            <!-- Action Buttons Grid -->
+            <div class="action-buttons">
+                <button class="action-btn" id="btnKeypad" title="Keypad">
+                    <i class="fas fa-th"></i>
+                    <span>Keypad</span>
+                </button>
+                <button class="action-btn" id="btnHistory" title="History">
+                    <i class="fas fa-clock-rotate-left"></i>
+                    <span>History</span>
+                </button>
+                <button class="action-btn" id="btnVolume" title="Volume">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Volume</span>
+                </button>
+            </div>
+
+            <!-- Call Button -->
+            <button class="call-button call-start" id="btnCall">
+                <i class="fas fa-phone"></i>
+            </button>
+        </div>
+
+        <!-- Active Call Screen -->
+        <div id="sip-active-call" class="screen-content active-call-screen">
+            <div class="avatar-container">
+                <div class="avatar large">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <h2 class="contact-name" id="activeCallName">Contact</h2>
+            <div class="call-timer" id="callTimer">00:00:00</div>
+            <div class="call-number" id="activeCallNumber">+000 000 0000</div>
+            <div id="txtCallStatus" class="call-status-text"></div>
+
+            <!-- In-Call Action Buttons (3x3 Grid) -->
+            <div class="incall-actions">
+                <button class="incall-btn" id="btnAddCall" title="Add Call">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Add</span>
+                </button>
+                <button class="incall-btn" id="btnInCallKeypad" title="Keypad">
+                    <i class="fas fa-th"></i>
+                    <span>Keypad</span>
+                </button>
+                <button class="incall-btn" id="btnMute" title="Mute">
+                    <i class="fas fa-microphone"></i>
+                    <span>Mute</span>
+                </button>
+                <button class="incall-btn" id="btnVideo" title="Video">
+                    <i class="fas fa-video"></i>
+                    <span>Video</span>
+                </button>
+                <button class="incall-btn" id="btnSpeaker" title="Speaker">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Speaker</span>
+                </button>
+                <button class="incall-btn" id="btnHold" title="Hold">
+                    <i class="fas fa-pause"></i>
+                    <span>Hold</span>
+                </button>
+                <button class="incall-btn" id="btnTransfer" title="Transfer">
+                    <i class="fas fa-right-left"></i>
+                    <span>Transfer</span>
+                </button>
+                <button class="incall-btn" id="btnDTMF" title="DTMF">
+                    <i class="fas fa-moon"></i>
+                    <span>DND</span>
+                </button>
+                <button class="incall-btn" id="btnWarm" title="Warm Transfer">
+                    <i class="fas fa-sun"></i>
+                    <span>Warm</span>
+                </button>
+            </div>
+
+            <!-- End Call Button -->
+            <button class="call-button call-end" id="btnHangup">
+                <i class="fas fa-phone"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Keypad Modal -->
+    <div id="keypad-modal" class="modal">
+        <div class="modal-content keypad-content">
+            <div class="modal-header">
+                <h3>Keypad</h3>
+                <button class="modal-close" id="closeKeypad">&times;</button>
+            </div>
+            <div class="keypad-display">
+                <span id="keypadDisplay"></span>
+            </div>
+            <div class="keypad-grid">
+                <button class="keypad-btn" data-digit="1">1<span>&nbsp;</span></button>
+                <button class="keypad-btn" data-digit="2">2<span>ABC</span></button>
+                <button class="keypad-btn" data-digit="3">3<span>DEF</span></button>
+                <button class="keypad-btn" data-digit="4">4<span>GHI</span></button>
+                <button class="keypad-btn" data-digit="5">5<span>JKL</span></button>
+                <button class="keypad-btn" data-digit="6">6<span>MNO</span></button>
+                <button class="keypad-btn" data-digit="7">7<span>PQRS</span></button>
+                <button class="keypad-btn" data-digit="8">8<span>TUV</span></button>
+                <button class="keypad-btn" data-digit="9">9<span>WXYZ</span></button>
+                <button class="keypad-btn" data-digit="*">*<span>&nbsp;</span></button>
+                <button class="keypad-btn" data-digit="0">0<span>+</span></button>
+                <button class="keypad-btn" data-digit="#">#<span>&nbsp;</span></button>
+            </div>
+            <button class="keypad-action-btn" id="keypadSend">
+                <i class="fas fa-paper-plane"></i> Send
+            </button>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content history-content">
+            <div class="modal-header">
+                <h3>Recent Calls</h3>
+                <button class="modal-close" id="closeHistory">&times;</button>
+            </div>
+            <div id="sip-logitems" class="history-list">
+                <p class="empty-state">No recent calls from this browser.</p>
+            </div>
+            <button class="history-clear-btn" id="clearHistory">
+                <i class="fas fa-trash"></i> Clear History
+            </button>
+        </div>
+    </div>
+
+    <!-- Volume Modal -->
+    <div id="volume-modal" class="modal">
+        <div class="modal-content volume-content">
+            <div class="modal-header">
+                <h3>Volume</h3>
+                <button class="modal-close" id="closeVolume">&times;</button>
+            </div>
+            <div class="volume-control">
+                <i class="fas fa-volume-down"></i>
+                <input type="range" min="0" max="100" value="100" step="1" id="sldVolume" class="volume-slider" />
+                <i class="fas fa-volume-up"></i>
+            </div>
+            <div class="volume-value" id="volumeValue">100%</div>
+        </div>
+    </div>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="modal">
+        <div class="modal-content config-content">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="modal-close" id="closeConfig">&times;</button>
+            </div>
+            <div class="config-form">
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" id="cfgDisplay" class="config-input" placeholder="Your Name" />
+                </div>
+                <div class="form-group">
+                    <label>SIP User</label>
+                    <input type="text" id="cfgUser" class="config-input" placeholder="1000" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="cfgPassword" class="config-input" placeholder="Password" />
+                </div>
+                <div class="form-group">
+                    <label>Realm/Domain</label>
+                    <input type="text" id="cfgRealm" class="config-input" placeholder="sip.example.com" />
+                </div>
+                <div class="form-group">
+                    <label>WebSocket Server</label>
+                    <input type="text" id="cfgWSServer" class="config-input" placeholder="wss://sip.example.com:7443" />
+                </div>
+                <button class="config-save-btn" id="btnSaveConfig">
+                    <i class="fas fa-save"></i> Save & Reload
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Audio Elements -->
+<audio id="ringtone" src="sounds/incoming.mp3" loop></audio>
+<audio id="ringbacktone" src="sounds/outgoing.mp3" loop></audio>
+<audio id="dtmfTone" src="sounds/dtmf.mp3"></audio>
+<audio id="audioRemote"></audio>
+
+<!-- Scripts -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="scripts/moment.js/moment.min.js"></script>
+<script type="text/javascript" src="scripts/SIP.js/sip.min.js"></script>
+<script type="text/javascript" src="scripts/config.js"></script>
+<script type="text/javascript" src="scripts/app-modern.js"></script>
+
+</body>
+</html>
+
