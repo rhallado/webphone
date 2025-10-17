@@ -318,16 +318,17 @@ body {
 
 /* Call Buttons */
 .call-button {
-    width: 50px;
+    width: 100%;
+    max-width: 280px;
     height: 50px;
-    border-radius: 50%;
+    border-radius: 25px;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 8px;
+    margin: 8px auto;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -720,18 +721,18 @@ body {
 .numeric-keypad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+    gap: 10px;
     width: 100%;
-    max-width: 290px;
+    max-width: 280px;
     margin: 5px auto 8px auto;
-    padding: 0;
+    padding: 0 10px;
 }
 
 .num-btn {
     background: rgba(255, 255, 255, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.3);
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     width: 100%;
     aspect-ratio: 1;
@@ -742,6 +743,9 @@ body {
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(10px);
+    max-width: 70px;
+    max-height: 70px;
+    margin: 0 auto;
 }
 
 .num-btn:hover {
