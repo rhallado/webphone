@@ -91,7 +91,7 @@ body {
 
 /* Avatar */
 .avatar-container {
-    margin: 20px 0;
+    margin: 10px 0 5px 0;
 }
 
 .avatar {
@@ -125,7 +125,7 @@ body {
     color: white;
     font-size: 28px;
     font-weight: 300;
-    margin: 10px 0;
+    margin: 8px 0 5px 0;
     text-align: center;
 }
 
@@ -149,7 +149,7 @@ body {
 .status-text {
     color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
-    margin: 10px 0 30px;
+    margin: 0 0 15px 0;
 }
 
 .call-status-text {
@@ -188,13 +188,14 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* Action Buttons (3 buttons in splash) */
+/* Action Buttons (2 buttons in splash) */
 .action-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     width: 100%;
-    margin: 30px 0;
+    max-width: 280px;
+    margin: 20px auto;
 }
 
 .action-btn {
@@ -684,7 +685,7 @@ body {
     gap: 12px;
     width: 100%;
     max-width: 280px;
-    margin: 20px auto;
+    margin: 10px auto 15px auto;
     padding: 0 10px;
 }
 
@@ -714,5 +715,246 @@ body {
 .num-btn:active {
     transform: scale(0.95);
     background: rgba(255, 255, 255, 0.35);
+}
+
+
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablets e telas menores */
+@media (max-width: 768px) {
+    .phone-container {
+        max-width: 100%;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+
+    .phone-screen {
+        min-height: calc(100vh - 60px);
+    }
+
+    .contact-name {
+        font-size: 24px;
+    }
+
+    .call-timer {
+        font-size: 28px;
+    }
+
+    .call-number {
+        font-size: 20px;
+    }
+
+    .numeric-keypad {
+        max-width: 260px;
+        gap: 10px;
+    }
+
+    .num-btn {
+        font-size: 22px;
+    }
+
+    .action-buttons {
+        gap: 15px;
+    }
+
+    .action-btn {
+        width: 90px;
+        height: 90px;
+    }
+
+    .action-btn i {
+        font-size: 24px;
+    }
+
+    .action-btn span {
+        font-size: 11px;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 480px) {
+    body {
+        padding: 0;
+    }
+
+    .phone-container {
+        border-radius: 0;
+    }
+
+    .status-bar {
+        padding: 12px 20px 8px;
+    }
+
+    .phone-screen {
+        padding: 15px 20px 30px;
+    }
+
+    .avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .avatar i {
+        font-size: 35px;
+    }
+
+    .contact-name {
+        font-size: 22px;
+    }
+
+    .status-text {
+        font-size: 14px;
+    }
+
+    .dial-input {
+        font-size: 18px;
+        padding: 12px 20px;
+    }
+
+    .numeric-keypad {
+        max-width: 240px;
+        gap: 8px;
+    }
+
+    .num-btn {
+        font-size: 20px;
+    }
+
+    .action-buttons {
+        gap: 12px;
+    }
+
+    .action-btn {
+        width: 80px;
+        height: 80px;
+    }
+
+    .action-btn i {
+        font-size: 22px;
+    }
+
+    .action-btn span {
+        font-size: 10px;
+    }
+
+    .call-button {
+        width: 65px;
+        height: 65px;
+    }
+
+    .call-button i {
+        font-size: 24px;
+    }
+
+    /* In-call buttons */
+    .in-call-btn {
+        width: 65px;
+        height: 65px;
+    }
+
+    .in-call-btn i {
+        font-size: 20px;
+    }
+
+    .in-call-btn span {
+        font-size: 10px;
+    }
+
+    /* Modals */
+    .modal-content {
+        width: 95%;
+        max-width: 350px;
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+    }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 360px) {
+    .numeric-keypad {
+        max-width: 220px;
+        gap: 6px;
+    }
+
+    .num-btn {
+        font-size: 18px;
+    }
+
+    .action-buttons {
+        gap: 10px;
+    }
+
+    .action-btn {
+        width: 70px;
+        height: 70px;
+    }
+
+    .action-btn i {
+        font-size: 20px;
+    }
+
+    .action-btn span {
+        font-size: 9px;
+    }
+}
+
+/* Landscape mode para smartphones */
+@media (max-height: 600px) and (orientation: landscape) {
+    .phone-screen {
+        min-height: auto;
+        padding: 10px 20px 20px;
+    }
+
+    .avatar-container {
+        margin: 5px 0;
+    }
+
+    .avatar {
+        width: 60px;
+        height: 60px;
+    }
+
+    .avatar i {
+        font-size: 30px;
+    }
+
+    .contact-name {
+        font-size: 20px;
+        margin: 5px 0;
+    }
+
+    .status-text {
+        margin: 0 0 10px 0;
+        font-size: 13px;
+    }
+
+    .numeric-keypad {
+        margin: 8px auto 10px auto;
+        max-width: 200px;
+        gap: 6px;
+    }
+
+    .num-btn {
+        font-size: 18px;
+    }
+
+    .action-buttons {
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .action-btn {
+        width: 65px;
+        height: 65px;
+    }
+
+    .call-button {
+        width: 55px;
+        height: 55px;
+    }
 }
 
