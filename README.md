@@ -121,3 +121,24 @@ Para um teste de conectividade SIP bem-sucedido, seria necessário:
 1.  Verificar a validade das credenciais no servidor SIP.
 2.  Garantir que o servidor `pabx01.telenova.com.br` esteja acessível e configurado corretamente para conexões WebSocket seguras (WSS).
 3.  Analisar os logs do servidor SIP para identificar a causa exata da falha de registro.
+
+
+## Teste de Conectividade SIP (v2.0.1 - Após Desativação do Firewall)
+
+Após a desativação do firewall do servidor, um novo teste de conectividade SIP foi realizado com as mesmas credenciais (`Usuário: 1000`, `Senha: 321654987ab`, `Domínio/Realm: pabx01.telenova.com.br`, `Servidor WebSocket: wss://pabx01.telenova.com.br:7443`).
+
+**Resultado:**
+
+O console do navegador ainda indica que o objeto `ctxSip` ou `ctxSip.ua` não está definido, e foi observado o erro `getUserMedia failed: NotFoundError: Requested device not found`. Isso sugere que a biblioteca SIP.js não está sendo inicializada corretamente ou não consegue acessar os dispositivos de mídia (microfone) no ambiente sandboxed do navegador.
+
+**Conclusão:**
+
+A desativação do firewall não resolveu o problema de conectividade SIP. A falha agora parece estar relacionada à inicialização da biblioteca SIP.js dentro do ambiente de execução do navegador, possivelmente devido a restrições de segurança para acesso a hardware (microfone) ou a um problema na configuração do `ctxSip` que impede a criação do User Agent (UA) SIP. Sem um `ctxSip.ua` válido, o registro SIP não pode ser estabelecido.
+
+**Próximos Passos Sugeridos:**
+
+1.  **Verificar Logs do Navegador (Detalhado):** Inspecionar o console do navegador para quaisquer outros erros ou avisos relacionados à inicialização do SIP.js ou WebRTC.
+2.  **Testar em Ambiente Não-Sandboxed:** Tentar executar o webphone em um navegador local (fora da sandbox) para descartar restrições do ambiente de teste.
+3.  **Revisar Configuração do SIP.js:** Assegurar que todas as dependências e configurações da biblioteca SIP.js estejam corretas e que o acesso ao microfone seja solicitado e concedido.
+
+**Observação:** A funcionalidade de salvar as credenciais no `localStorage` e recarregar a página após o salvamento continua **funcionando corretamente**.
