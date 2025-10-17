@@ -125,6 +125,9 @@ $(document).ready(function() {
         showActiveCallScreen : function() {
             $('#sip-splash').removeClass('active');
             $('#sip-active-call').addClass('active');
+            // Show both buttons by default (will be hidden if needed)
+            $('#btnAnswer').show();
+            $('#btnHangup').show();
         },
 
         updateCallTimer : function() {
