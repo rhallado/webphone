@@ -9,7 +9,39 @@ $(document).ready(function() {
         user = JSON.parse(localStorage.getItem('SIPCreds'));
     }
 
-    // If no credentials, show config modal and stop initialization
+    // Setup Config Modal event handlers (needed even without credentials)
+    $('#btnConfig').click(function() {
+        // Load current config
+        var creds = JSON.parse(localStorage.getItem('SIPCreds'));
+        if (creds) {
+            $('#cfgDisplay').val(creds.Display);
+            $('#cfgUser').val(creds.User);
+            $('#cfgPassword').val(creds.Pass);
+            $('#cfgRealm').val(creds.Realm);
+            $('#cfgWSServer').val(creds.WSServer);
+        }
+        $('#config-modal').addClass('active');
+    });
+
+    $('#closeConfig').click(function() {
+        $('#config-modal').removeClass('active');
+    });
+
+    $('#btnSaveConfig').click(function() {
+        var config = {
+            Display: $('#cfgDisplay').val(),
+            User: $('#cfgUser').val(),
+            Pass: $('#cfgPassword').val(),
+            Realm: $('#cfgRealm').val(),
+            WSServer: $('#cfgWSServer').val()
+        };
+        
+        localStorage.setItem('SIPCreds', JSON.stringify(config));
+        alert('Configurações salvas! Recarregando...');
+        location.reload();
+    });
+
+    // If no credentials, show config modal and stop SIP initialization
     if (!user || !user.Pass || !user.User || !user.Realm || !user.WSServer) {
         $('#config-modal').addClass('active');
         $('#txtRegStatus').html('Por favor, configure suas credenciais SIP');
@@ -684,37 +716,7 @@ $(document).ready(function() {
         });
     });
 
-    // Config Modal
-    $('#btnConfig').click(function() {
-        // Load current config
-        var creds = JSON.parse(localStorage.getItem('SIPCreds'));
-        if (creds) {
-            $('#cfgDisplay').val(creds.Display);
-            $('#cfgUser').val(creds.User);
-            $('#cfgPassword').val(creds.Pass);
-            $('#cfgRealm').val(creds.Realm);
-            $('#cfgWSServer').val(creds.WSServer);
-        }
-        $('#config-modal').addClass('active');
-    });
-
-    $('#closeConfig').click(function() {
-        $('#config-modal').removeClass('active');
-    });
-
-    $('#btnSaveConfig').click(function() {
-        var config = {
-            Display: $('#cfgDisplay').val(),
-            User: $('#cfgUser').val(),
-            Pass: $('#cfgPassword').val(),
-            Realm: $('#cfgRealm').val(),
-            WSServer: $('#cfgWSServer').val()
-        };
-        
-        localStorage.setItem('SIPCreds', JSON.stringify(config));
-        alert('Configurações salvas! Recarregando...');
-        location.reload();
-    });
+    // Config Modal handlers already set up at the beginning
 
     // Close modals on background click
     $('.modal').click(function(e) {
