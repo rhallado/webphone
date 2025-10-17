@@ -96,7 +96,3 @@ Este projeto é baseado no [ctxSip](https://github.com/Collecttix/ctxSip) e mant
 
 Para questões, bugs ou sugestões, abra uma issue no repositório do GitHub.
 
----
-
-**Desenvolvido com ❤️ para a Telenova**
-
