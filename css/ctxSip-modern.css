@@ -378,7 +378,7 @@ body {
 }
 
 .modal-content {
-    background: linear-gradient(180deg, #7b8cde 0%, #8e7cc3 100%);
+    background: linear-gradient(135deg, #003d5c 0%, #00a3cc 100%);
     border-radius: 30px;
     padding: 25px;
     max-width: 90%;
