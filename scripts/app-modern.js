@@ -11,7 +11,8 @@ $(document).ready(function() {
 
     // If no credentials, show config modal and stop initialization
     if (!user || !user.Pass || !user.User || !user.Realm || !user.WSServer) {
-        $('#config-modal').addClass('active');
+        $("#config-modal").addClass("active");
+
         $('#txtRegStatus').html('Por favor, configure suas credenciais SIP');
         return;
     }
@@ -712,7 +713,7 @@ $(document).ready(function() {
         };
         
         localStorage.setItem('SIPCreds', JSON.stringify(config));
-        alert('Configurações salvas! Recarregando...');
+
         location.reload();
     });
 
