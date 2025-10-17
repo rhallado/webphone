@@ -603,6 +603,15 @@ $(document).ready(function() {
         }
     });
 
+    // ========== NUMERIC KEYPAD HANDLERS ==========
+
+    // Numeric keypad on splash screen
+    $('.num-btn').click(function() {
+        var num = $(this).data('num');
+        var current = $('#numDisplay').val();
+        $('#numDisplay').val(current + num);
+    });
+
     // ========== MODAL HANDLERS ==========
 
     // Keypad Modal
