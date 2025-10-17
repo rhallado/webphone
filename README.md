@@ -100,3 +100,24 @@ Para questões, bugs ou sugestões, abra uma issue no repositório do GitHub.
 
 **Desenvolvido com ❤️ para a Telenova**
 
+
+
+## Teste de Conectividade SIP (v1.9.0)
+
+Com base nas credenciais fornecidas pelo usuário (`Usuário: 1000`, `Senha: 321654987ab`, `Domínio/Realm: pabx01.telenova.com.br`, `Servidor WebSocket: wss://pabx01.telenova.com.br:7443`), foi realizado um teste de conectividade SIP. 
+
+**Resultado:**
+
+A conexão WebSocket com `wss://pabx01.telenova.com.br:7443/` **falhou**, e o objeto `ctxSip.ua` não foi inicializado, indicando que o webphone **não conseguiu se registrar** no servidor SIP com as credenciais fornecidas. As possíveis causas para esta falha incluem:
+
+*   **Credenciais Inválidas**: As credenciais (usuário e/ou senha) podem estar incorretas ou não ativas no servidor SIP.
+*   **Servidor SIP Inacessível**: O servidor `pabx01.telenova.com.br` pode não estar acessível da sandbox onde o teste foi executado, ou pode haver restrições de firewall.
+*   **Configuração do Servidor WebSocket**: Pode haver uma configuração incorreta no servidor FreeSWITCH ou no proxy WebSocket que impede a conexão.
+
+**Observação:** A funcionalidade de salvar as credenciais no `localStorage` e recarregar a página após o salvamento foi **confirmada como funcionando corretamente** na versão v1.9.0.
+
+Para um teste de conectividade SIP bem-sucedido, seria necessário:
+
+1.  Verificar a validade das credenciais no servidor SIP.
+2.  Garantir que o servidor `pabx01.telenova.com.br` esteja acessível e configurado corretamente para conexões WebSocket seguras (WSS).
+3.  Analisar os logs do servidor SIP para identificar a causa exata da falha de registro.
