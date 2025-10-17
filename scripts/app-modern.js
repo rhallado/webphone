@@ -12,7 +12,7 @@ $(document).ready(function() {
     // If no credentials, show config modal and stop initialization
     if (!user || !user.Pass || !user.User || !user.Realm || !user.WSServer) {
         $('#config-modal').addClass('active');
-        $('#txtRegStatus').html('Please configure your SIP credentials');
+        $('#txtRegStatus').html('Por favor, configure suas credenciais SIP');
         return;
     }
 
@@ -119,10 +119,10 @@ $(document).ready(function() {
             var status;
 
             if (newSess.direction === 'incoming') {
-                status = "Incoming: "+ newSess.displayName;
+                status = "Recebendo: "+ newSess.displayName;
                 ctxSip.startRingTone();
             } else {
-                status = "Trying: "+ newSess.displayName;
+                status = "Tentando: "+ newSess.displayName;
                 ctxSip.startRingbackTone();
             }
 
@@ -139,13 +139,13 @@ $(document).ready(function() {
 
             newSess.on('progress',function(e) {
                 if (e.direction === 'outgoing') {
-                    ctxSip.setCallSessionStatus('Calling...');
+                    ctxSip.setCallSessionStatus('Chamando...');
                 }
             });
 
             newSess.on('connecting',function(e) {
                 if (e.direction === 'outgoing') {
-                    ctxSip.setCallSessionStatus('Connecting...');
+                    ctxSip.setCallSessionStatus('Conectando...');
                 }
             });
 
@@ -157,7 +157,7 @@ $(document).ready(function() {
 
                 ctxSip.stopRingbackTone();
                 ctxSip.stopRingTone();
-                ctxSip.setCallSessionStatus('Connected');
+                ctxSip.setCallSessionStatus('Conectado');
                 ctxSip.logCall(newSess, 'answered');
                 ctxSip.callActiveID = newSess.ctxid;
 
@@ -171,20 +171,20 @@ $(document).ready(function() {
             newSess.on('hold', function(e) {
                 ctxSip.callActiveID = null;
                 ctxSip.logCall(newSess, 'holding');
-                ctxSip.setCallSessionStatus('On Hold');
+                ctxSip.setCallSessionStatus('Em Espera');
                 $('#btnHold').addClass('active');
             });
 
             newSess.on('unhold', function(e) {
                 ctxSip.logCall(newSess, 'resumed');
                 ctxSip.callActiveID = newSess.ctxid;
-                ctxSip.setCallSessionStatus('Connected');
+                ctxSip.setCallSessionStatus('Conectado');
                 $('#btnHold').removeClass('active');
             });
 
             newSess.on('muted', function(e) {
                 ctxSip.Sessions[newSess.ctxid].isMuted = true;
-                ctxSip.setCallSessionStatus("Muted");
+                ctxSip.setCallSessionStatus("Silenciado");
                 $('#btnMute').addClass('active');
                 $('#btnMute i').removeClass('fa-microphone').addClass('fa-microphone-slash');
             });
@@ -199,7 +199,7 @@ $(document).ready(function() {
             newSess.on('cancel', function(e) {
                 ctxSip.stopRingTone();
                 ctxSip.stopRingbackTone();
-                ctxSip.setCallSessionStatus("Canceled");
+                ctxSip.setCallSessionStatus("Cancelada");
                 if (this.direction === 'outgoing') {
                     ctxSip.callActiveID = null;
                     newSess             = null;
@@ -221,14 +221,14 @@ $(document).ready(function() {
             newSess.on('failed',function(e) {
                 ctxSip.stopRingTone();
                 ctxSip.stopRingbackTone();
-                ctxSip.setCallSessionStatus('Terminated');
+                ctxSip.setCallSessionStatus('Terminada');
                 ctxSip.endCall();
             });
 
             newSess.on('rejected',function(e) {
                 ctxSip.stopRingTone();
                 ctxSip.stopRingbackTone();
-                ctxSip.setCallSessionStatus('Rejected');
+                ctxSip.setCallSessionStatus('Rejeitada');
                 ctxSip.callActiveID = null;
                 ctxSip.logCall(this, 'ended');
                 newSess             = null;
@@ -257,7 +257,7 @@ $(document).ready(function() {
         // getUser media request refused or device was not present
         getUserMediaFailure : function(e) {
             window.console.error('getUserMedia failed:', e);
-            alert('Media Error: You must allow access to your microphone.');
+            alert('Erro de Mídia: Você deve permitir acesso ao seu microfone.');
         },
 
         getUserMediaSuccess : function(stream) {
@@ -353,7 +353,7 @@ $(document).ready(function() {
          */
         logItem : function(item) {
 
-            var callLength = (item.status !== 'ended')? 'Active': moment.duration(item.stop - item.start).humanize(),
+            var callLength = (item.status !== 'ended')? 'Ativo': moment.duration(item.stop - item.start).humanize(),
                 callIcon;
 
             switch (item.status) {
@@ -417,10 +417,10 @@ $(document).ready(function() {
         sipTransfer : function(sessionid) {
 
             var s      = ctxSip.Sessions[sessionid],
-                target = window.prompt('Enter destination number', '');
+                target = window.prompt('Digite o número de destino', '');
 
             if (target) {
-                ctxSip.setCallSessionStatus('<i>Transfering the call...</i>');
+                ctxSip.setCallSessionStatus('<i>Transferindo a chamada...</i>');
                 s.refer(target);
             }
         },
@@ -506,7 +506,7 @@ $(document).ready(function() {
             } else if (navigator.getUserMedia) {
                 return true;
             } else {
-                alert('Unsupported Browser: Your browser does not support the features required for this phone.');
+                alert('Navegador Não Suportado: Seu navegador não suporta os recursos necessários para este telefone.');
                 window.console.error("WebRTC support not found");
                 return false;
             }
@@ -525,14 +525,14 @@ $(document).ready(function() {
     });
 
     ctxSip.phone.on('disconnected', function(e) {
-        ctxSip.setStatus("Disconnected");
-        alert('Websocket Disconnected: An Error occurred connecting to the websocket.');
+        ctxSip.setStatus("Desconectado");
+        alert('WebSocket Desconectado: Ocorreu um erro ao conectar ao websocket.');
     });
 
     ctxSip.phone.on('registered', function(e) {
 
         var closeEditorWarning = function() {
-            return 'If you close this window, you will not be able to make or receive calls from your browser.';
+            return 'Se você fechar esta janela, não poderá fazer ou receber chamadas do seu navegador.';
         };
 
         var closePhone = function() {
@@ -545,7 +545,7 @@ $(document).ready(function() {
 
         localStorage.setItem('ctxPhone', 'true');
 
-        ctxSip.setStatus("Ready");
+        ctxSip.setStatus("Pronto");
 
         // Get the userMedia and cache the stream
         if (SIP.WebRTC.isSupported()) {
@@ -554,13 +554,13 @@ $(document).ready(function() {
     });
 
     ctxSip.phone.on('registrationFailed', function(e) {
-        alert('Registration Error: An Error occurred registering your phone. Check your settings.');
-        ctxSip.setStatus("Error: Registration Failed");
+        alert('Erro de Registro: Ocorreu um erro ao registrar seu telefone. Verifique suas configurações.');
+        ctxSip.setStatus("Erro: Falha no Registro");
     });
 
     ctxSip.phone.on('unregistered', function(e) {
-        alert('Registration Error: An Error occurred registering your phone. Check your settings.');
-        ctxSip.setStatus("Error: Registration Failed");
+        alert('Erro de Registro: Ocorreu um erro ao registrar seu telefone. Verifique suas configurações.');
+        ctxSip.setStatus("Erro: Falha no Registro");
     });
 
     ctxSip.phone.on('invite', function (incomingSession) {
@@ -703,7 +703,7 @@ $(document).ready(function() {
         };
         
         localStorage.setItem('SIPCreds', JSON.stringify(config));
-        alert('Settings saved! Reloading...');
+        alert('Configurações salvas! Recarregando...');
         location.reload();
     });
 
