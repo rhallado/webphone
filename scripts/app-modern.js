@@ -153,9 +153,13 @@ $(document).ready(function() {
             if (newSess.direction === 'incoming') {
                 status = "Recebendo: "+ newSess.displayName;
                 ctxSip.startRingTone();
+                // Show answer button for incoming calls
+                $('#btnAnswer').show();
             } else {
                 status = "Tentando: "+ newSess.displayName;
                 ctxSip.startRingbackTone();
+                // Hide answer button for outgoing calls
+                $('#btnAnswer').hide();
             }
 
             ctxSip.logCall(newSess, 'ringing');
@@ -192,6 +196,9 @@ $(document).ready(function() {
                 ctxSip.setCallSessionStatus('Conectado');
                 ctxSip.logCall(newSess, 'answered');
                 ctxSip.callActiveID = newSess.ctxid;
+                
+                // Hide answer button when call is connected
+                $('#btnAnswer').hide();
 
                 // Start call timer
                 ctxSip.callTimers[newSess.ctxid] = {
@@ -457,16 +464,42 @@ $(document).ready(function() {
             }
         },
 
+        sipAnswer : function(sessionid) {
+            var s = ctxSip.Sessions[sessionid];
+            if (!s) {
+                return;
+            }
+            
+            // Answer the incoming call
+            if (s.direction === 'incoming' && !s.startTime) {
+                s.accept({
+                    media: {
+                        stream: ctxSip.Stream,
+                        constraints: { audio: true, video: false },
+                        render: {
+                            remote: $('#audioRemote').get()[0]
+                        }
+                    }
+                });
+            }
+        },
+
         sipHangUp : function(sessionid) {
 
             var s = ctxSip.Sessions[sessionid];
             if (!s) {
                 return;
-            } else if (s.startTime) {
+            }
+            
+            // Check session state to determine how to end the call
+            if (s.startTime) {
+                // Call is connected, use bye()
                 s.bye();
-            } else if (s.reject) {
+            } else if (s.direction === 'incoming') {
+                // Incoming call not yet answered, reject it
                 s.reject();
-            } else if (s.cancel) {
+            } else {
+                // Outgoing call not yet answered, cancel it
                 s.cancel();
             }
         },
@@ -606,6 +639,11 @@ $(document).ready(function() {
     // Call button
     $('#btnCall').click(function() {
         ctxSip.phoneCallButtonPressed();
+    });
+
+    // Answer button
+    $('#btnAnswer').click(function() {
+        ctxSip.sipAnswer(ctxSip.callActiveID);
     });
 
     // Hangup button

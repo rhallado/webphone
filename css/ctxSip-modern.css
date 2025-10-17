@@ -349,6 +349,11 @@ body {
     color: white;
 }
 
+.call-answer {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+}
+
 .call-end {
     background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
     color: white;
@@ -356,6 +361,22 @@ body {
 
 .call-end i {
     transform: rotate(135deg);
+}
+
+/* Call Action Buttons Container */
+.call-action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    margin-top: 8px;
+}
+
+.call-action-buttons .call-button {
+    flex: 1;
+    max-width: 130px;
+    margin: 0;
 }
 
 /* Modal Styles */
