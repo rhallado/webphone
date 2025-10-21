@@ -42,15 +42,21 @@ $(document).ready(function() {
     });
 
     // Setup call control buttons (needed for incoming calls even without active session)
-    $('#btnAnswer').click(function() {
+    // Use event delegation for call control buttons to ensure they are always active
+    $(document).on("click", "#btnAnswer", function() {
+        console.log("btnAnswer clicked. callActiveID: ", ctxSip.callActiveID);
         if (ctxSip && ctxSip.sipAnswer && ctxSip.callActiveID) {
+            console.log("Calling sipAnswer for callActiveID: ", ctxSip.callActiveID);
             ctxSip.sipAnswer(ctxSip.callActiveID);
+        } else {
+            console.log("btnAnswer: ctxSip or callActiveID is not defined.");
         }
     });
 
-    $("#btnHangup").click(function() {
+    $(document).on("click", "#btnHangup", function() {
         console.log("btnHangup clicked. callActiveID: ", ctxSip.callActiveID);
         if (ctxSip && ctxSip.sipHangUp && ctxSip.callActiveID) {
+            console.log("Calling sipHangUp for callActiveID: ", ctxSip.callActiveID);
             ctxSip.sipHangUp(ctxSip.callActiveID);
         } else {
             console.log("btnHangup: ctxSip or callActiveID is not defined.");
