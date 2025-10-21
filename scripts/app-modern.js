@@ -168,9 +168,7 @@ $(document).ready(function() {
             var status;
 
             // Update UI for incoming/outgoing call
-            ctxSip.showActiveCallScreen();
-
-            // Set the active call ID immediately when a new session is created
+             // Set the active call ID immediately when a new session is created
             ctxSip.callActiveID = newSess.ctxid;
 
             // Hide answer button by default when a new session starts, it will be shown for incoming calls
@@ -186,7 +184,6 @@ $(document).ready(function() {
                 status = "Tentando: "+ newSess.displayName;
                 ctxSip.startRingbackTone();
                 // For outgoing calls, ensure answer button is hidden, show only hangup button
-                $("#btnAnswer").hide(); // Explicitly hide for outgoing
                 $("#btnHangup").show();
             }
 
@@ -194,8 +191,7 @@ $(document).ready(function() {
             ctxSip.setCallSessionStatus(status);
 
             // Update UI for incoming/outgoing call
-            ctxSip.showActiveCallScreen();
-            $('#activeCallName').text(newSess.displayName);
+            ctxSip.showActiveCallScreen();Sip.showActiveCallScreen();Name').text(newSess.displayName);
             $('#activeCallNumber').text(ctxSip.formatPhone(newSess.remoteIdentity.uri.user));
             $('#callTimer').text('00:00:00');
 

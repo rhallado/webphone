@@ -1,12 +1,12 @@
 var user = {
     //  User Name
-    "User" : "sipuser",
+    "User" : "1000",
     //  Password
-    "Pass" : "yourpassword",
+    "Pass" : "",
     //  Auth Realm
-    "Realm"   : "sip.sample.com",
+    "Realm"   : "",
     // Display Name
-    "Display" : "Gob Bleuth",
+    "Display" : "Nome do Atendente",
     // WebSocket URL
-    "WSServer"  : "wss://wss.sample.com:8443"
+    "WSServer"  : ""
 };
