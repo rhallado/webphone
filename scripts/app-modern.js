@@ -178,6 +178,9 @@ $(document).ready(function() {
             // Update UI for incoming/outgoing call
             ctxSip.showActiveCallScreen();
 
+            // Set the active call ID immediately when a new session is created
+            ctxSip.callActiveID = newSess.ctxid;
+
             if (newSess.direction === 'incoming') {
                 status = "Recebendo: "+ newSess.displayName;
                 ctxSip.startRingTone();
@@ -225,7 +228,7 @@ $(document).ready(function() {
                 ctxSip.stopRingTone();
                 ctxSip.setCallSessionStatus('Conectado');
                 ctxSip.logCall(newSess, 'answered');
-                ctxSip.callActiveID = newSess.ctxid;
+                ctxSip.callActiveID = newSess.ctxid; // Ensure callActiveID is set upon acceptance
                 
                 // Once call is accepted, hide answer button (if it was an incoming call)
                 $("#btnAnswer").hide();
@@ -271,12 +274,10 @@ $(document).ready(function() {
                 ctxSip.stopRingTone();
                 ctxSip.stopRingbackTone();
                 ctxSip.setCallSessionStatus("Cancelada");
-                if (this.direction === 'outgoing') {
-                    ctxSip.callActiveID = null;
-                    newSess             = null;
-                    ctxSip.logCall(this, 'ended');
-                    ctxSip.endCall();
-                }
+                ctxSip.callActiveID = null; // Clear active ID on cancel
+                newSess             = null;
+                ctxSip.logCall(this, 'ended');
+                ctxSip.endCall();
             });
 
             newSess.on('bye', function(e) {
@@ -284,7 +285,7 @@ $(document).ready(function() {
                 ctxSip.stopRingbackTone();
                 ctxSip.setCallSessionStatus("");
                 ctxSip.logCall(newSess, 'ended');
-                ctxSip.callActiveID = null;
+                ctxSip.callActiveID = null; // Clear active ID on bye
                 newSess             = null;
                 ctxSip.endCall();
             });
@@ -300,7 +301,7 @@ $(document).ready(function() {
                 ctxSip.stopRingTone();
                 ctxSip.stopRingbackTone();
                 ctxSip.setCallSessionStatus('Rejeitada');
-                ctxSip.callActiveID = null;
+                ctxSip.callActiveID = null; // Clear active ID on rejected
                 ctxSip.logCall(this, 'ended');
                 newSess             = null;
                 ctxSip.endCall();
