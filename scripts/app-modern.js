@@ -132,11 +132,13 @@ $(document).ready(function() {
 
         // UI State Management
         showSplashScreen : function() {
+            console.log("Showing Splash Screen");
             $('#sip-splash').addClass('active');
             $('#sip-active-call').removeClass('active');
         },
 
         showActiveCallScreen : function() {
+            console.log("Showing Active Call Screen");
             $('#sip-splash').removeClass('active');
             $('#sip-active-call').addClass('active');
         },
@@ -305,6 +307,7 @@ $(document).ready(function() {
         },
 
         phoneCallButtonPressed : function() {
+            console.log("phoneCallButtonPressed called");
             var num = $('#numDisplay').val();
 
             if (!num) { 
@@ -317,6 +320,7 @@ $(document).ready(function() {
 
             if (num.length > 0) {
                 // Lógica de chamada existente
+                console.log("Initiating call with number: " + num);
                 var session = ctxSip.phone.invite(num, {
                     sessionDescriptionHandlerOptions: {
                         constraints: {
