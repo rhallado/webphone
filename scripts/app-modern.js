@@ -41,6 +41,19 @@ $(document).ready(function() {
         location.reload();
     });
 
+    // Setup call control buttons (needed for incoming calls even without active session)
+    $('#btnAnswer').click(function() {
+        if (ctxSip && ctxSip.sipAnswer && ctxSip.callActiveID) {
+            ctxSip.sipAnswer(ctxSip.callActiveID);
+        }
+    });
+
+    $('#btnHangup').click(function() {
+        if (ctxSip && ctxSip.sipHangUp && ctxSip.callActiveID) {
+            ctxSip.sipHangUp(ctxSip.callActiveID);
+        }
+    });
+
     // If no credentials, show config modal and stop SIP initialization
     if (!user || !user.Pass || !user.User || !user.Realm || !user.WSServer) {
         $('#config-modal').addClass('active');
