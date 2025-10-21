@@ -166,19 +166,24 @@ $(document).ready(function() {
 
             var status;
 
+            // Update UI for incoming/outgoing call
+            ctxSip.showActiveCallScreen();
+
             if (newSess.direction === 'incoming') {
                 status = "Recebendo: "+ newSess.displayName;
                 ctxSip.startRingTone();
-                // Show answer button for incoming calls
-                $('#btnAnswer').show();
+                // For incoming calls, show answer and hangup buttons
+                $("#btnAnswer").show();
+                $("#btnHangup").show();
             } else {
                 status = "Tentando: "+ newSess.displayName;
                 ctxSip.startRingbackTone();
-                // Hide answer button for outgoing calls
-                $('#btnAnswer').hide();
+                // For outgoing calls, hide answer button, show only hangup button
+                $("#btnAnswer").hide();
+                $("#btnHangup").show();
             }
 
-            ctxSip.logCall(newSess, 'ringing');
+            ctxSip.logCall(newSess, "ringing");
             ctxSip.setCallSessionStatus(status);
 
             // Update UI for incoming/outgoing call
@@ -213,8 +218,10 @@ $(document).ready(function() {
                 ctxSip.logCall(newSess, 'answered');
                 ctxSip.callActiveID = newSess.ctxid;
                 
-                // Hide answer button when call is connected
-                $('#btnAnswer').hide();
+                // Once call is accepted, hide answer button (if it was an incoming call)
+                $("#btnAnswer").hide();
+                // Ensure hangup button is visible for active call
+                $("#btnHangup").show();
 
                 // Start call timer
                 ctxSip.callTimers[newSess.ctxid] = {
