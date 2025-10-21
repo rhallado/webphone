@@ -48,9 +48,12 @@ $(document).ready(function() {
         }
     });
 
-    $('#btnHangup').click(function() {
+    $("#btnHangup").click(function() {
+        console.log("btnHangup clicked. callActiveID: ", ctxSip.callActiveID);
         if (ctxSip && ctxSip.sipHangUp && ctxSip.callActiveID) {
             ctxSip.sipHangUp(ctxSip.callActiveID);
+        } else {
+            console.log("btnHangup: ctxSip or callActiveID is not defined.");
         }
     });
 
@@ -508,23 +511,28 @@ $(document).ready(function() {
         },
 
         sipHangUp : function(sessionid) {
-
+            console.log("sipHangUp called with sessionid: ", sessionid);
             var s = ctxSip.Sessions[sessionid];
             if (!s) {
+                console.log("sipHangUp: Session not found for ID: ", sessionid);
                 return;
             }
+            console.log("sipHangUp: Session object: ", s);
             
             // Check session state to determine how to end the call
             if (s.startTime) {
-                // Call is connected, use bye()
+                console.log("sipHangUp: Call connected, using bye().");
                 s.bye();
             } else if (s.direction === 'incoming') {
-                // Incoming call not yet answered, reject it
+                console.log("sipHangUp: Incoming call, rejecting.");
                 s.reject();
             } else {
-                // Outgoing call not yet answered, cancel it
+                console.log("sipHangUp: Outgoing call, cancelling.");
                 s.cancel();
             }
+            // After hanging up, clear the active call ID and show splash screen
+            ctxSip.callActiveID = null;
+            ctxSip.showSplashScreen();
         },
 
         sipSendDTMF : function(digit) {
