@@ -223,21 +223,29 @@ $(document).ready(function() {
                 ctxSip.logCall(newSess, 'answered');
                 ctxSip.callActiveID = newSess.ctxid; // Ensure callActiveID is set upon acceptance
                 
-                // Anexar o fluxo de áudio remoto ao elemento <audio> usando a API moderna
+                // Anexar o fluxo de áudio remoto ao elemento <audio>
                 var remoteAudio = document.getElementById('audioRemote');
-                var pc = newSess.sessionDescriptionHandler.peerConnection;
                 
-                if (remoteAudio && pc) {
-                    pc.ontrack = function(event) {
-                        if (event.streams && event.streams[0]) {
-                            remoteAudio.srcObject = event.streams[0];
+                // Aguardar um pouco para garantir que o sessionDescriptionHandler esteja pronto
+                setTimeout(function() {
+                    if (newSess.sessionDescriptionHandler && newSess.sessionDescriptionHandler.peerConnection) {
+                        var pc = newSess.sessionDescriptionHandler.peerConnection;
+                        var remoteStreams = pc.getRemoteStreams();
+                        
+                        if (remoteStreams && remoteStreams.length > 0) {
+                            remoteAudio.srcObject = remoteStreams[0];
                             remoteAudio.play().catch(function(e) {
                                 console.error('Erro ao reproduzir áudio remoto:', e);
                             });
                             ctxSip.Stream = remoteAudio;
+                            console.log('Áudio remoto anexado com sucesso!');
+                        } else {
+                            console.error('Nenhum stream remoto encontrado.');
                         }
-                    };
-                }
+                    } else {
+                        console.error('sessionDescriptionHandler não está pronto.');
+                    }
+                }, 500); // Aguarda 500ms para garantir que a conexão esteja estabelecida
                 
                 // Once call is accepted, hide answer button (if it was an incoming call)
                 $('#btnAnswer').hide();
