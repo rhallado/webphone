@@ -196,28 +196,33 @@ $(document).ready(function() {
             $('#activeCallNumber').text(ctxSip.formatPhone(newSess.remoteIdentity.uri.user));
             $('#callTimer').text('00:00:00');
 
-            // Configurar captura de áudio remoto usando o evento trackAdded
-            newSess.on('trackAdded', function() {
-                console.log('Track added event fired.');
-                var remoteAudio = document.getElementById('audioRemote');
-                var pc = newSess.sessionDescriptionHandler.peerConnection;
-                var remoteStream = new MediaStream();
-                
-                pc.getReceivers().forEach(function(receiver) {
-                    if (receiver.track) {
-                        remoteStream.addTrack(receiver.track);
+            // Configurar captura de áudio remoto usando polling
+            var audioCheckInterval = setInterval(function() {
+                try {
+                    if (newSess.sessionDescriptionHandler && newSess.sessionDescriptionHandler.peerConnection) {
+                        var pc = newSess.sessionDescriptionHandler.peerConnection;
+                        var remoteStreams = pc.getRemoteStreams();
+                        
+                        if (remoteStreams && remoteStreams.length > 0) {
+                            var remoteAudio = document.getElementById('audioRemote');
+                            remoteAudio.srcObject = remoteStreams[0];
+                            remoteAudio.play().catch(function(e) {
+                                console.error('Erro ao reproduzir áudio remoto:', e);
+                            });
+                            ctxSip.Stream = remoteAudio;
+                            console.log('Áudio remoto anexado com sucesso via polling!');
+                            clearInterval(audioCheckInterval); // Para o polling após sucesso
+                        }
                     }
-                });
-                
-                if (remoteStream.getTracks().length > 0) {
-                    remoteAudio.srcObject = remoteStream;
-                    remoteAudio.play().catch(function(e) {
-                        console.error('Erro ao reproduzir áudio remoto:', e);
-                    });
-                    ctxSip.Stream = remoteAudio;
-                    console.log('Áudio remoto anexado via trackAdded!');
+                } catch (e) {
+                    console.error('Erro ao verificar stream remoto:', e);
                 }
-            });
+            }, 100); // Verifica a cada 100ms
+            
+            // Limpar o intervalo após 10 segundos para evitar vazamento de memória
+            setTimeout(function() {
+                clearInterval(audioCheckInterval);
+            }, 10000);
 
             // EVENT CALLBACKS
 
@@ -245,30 +250,6 @@ $(document).ready(function() {
                 ctxSip.setCallSessionStatus('Conectado');
                 ctxSip.logCall(newSess, 'answered');
                 ctxSip.callActiveID = newSess.ctxid; // Ensure callActiveID is set upon acceptance
-                
-                // Anexar o fluxo de áudio remoto ao elemento <audio>
-                var remoteAudio = document.getElementById('audioRemote');
-                
-                // Aguardar um pouco para garantir que o sessionDescriptionHandler esteja pronto
-                setTimeout(function() {
-                    if (newSess.sessionDescriptionHandler && newSess.sessionDescriptionHandler.peerConnection) {
-                        var pc = newSess.sessionDescriptionHandler.peerConnection;
-                        var remoteStreams = pc.getRemoteStreams();
-                        
-                        if (remoteStreams && remoteStreams.length > 0) {
-                            remoteAudio.srcObject = remoteStreams[0];
-                            remoteAudio.play().catch(function(e) {
-                                console.error('Erro ao reproduzir áudio remoto:', e);
-                            });
-                            ctxSip.Stream = remoteAudio;
-                            console.log('Áudio remoto anexado com sucesso!');
-                        } else {
-                            console.error('Nenhum stream remoto encontrado.');
-                        }
-                    } else {
-                        console.error('sessionDescriptionHandler não está pronto.');
-                    }
-                }, 500); // Aguarda 500ms para garantir que a conexão esteja estabelecida
                 
                 // Once call is accepted, hide answer button (if it was an incoming call)
                 $('#btnAnswer').hide();
