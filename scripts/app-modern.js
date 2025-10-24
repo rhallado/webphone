@@ -354,17 +354,13 @@ $(document).ready(function() {
                 // Lógica de chamada existente
                 
                 var session = ctxSip.phone.invite(num, {
-                    sessionDescriptionHandlerOptions: {
-                        constraints: {
-                            audio: true,
-                            video: false
-                        },
+                    media: {
+                        stream: ctxSip.Stream,
+                        constraints: { audio: true, video: false },
                         render: {
                             remote: document.getElementById('audioRemote')
                         },
-                        RTCConstraints: {
-                            "optional": [ {'DtlsSrtpKeyAgreement': 'true'} ]
-                        }
+                        RTCConstraints: { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'}] }
                     }
                 });
                 // Chamada explícita para newSession para garantir a atualização da UI para chamadas de saída
@@ -388,17 +384,13 @@ $(document).ready(function() {
             var sess = ctxSip.Sessions[id];
             if (sess) {
                 sess.accept({
-                    sessionDescriptionHandlerOptions: {
-                        constraints: {
-                            audio: true,
-                            video: false
-                        },
+                    media: {
+                        stream: ctxSip.Stream,
+                        constraints: { audio: true, video: false },
                         render: {
                             remote: { audio: document.getElementById('audioRemote') }
                         },
-                        RTCConstraints: {
-                            optional: [ { 'DtlsSrtpKeyAgreement': 'true' } ]
-                        }
+                        RTCConstraints: { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'}] }
                     }
                 });
             }
