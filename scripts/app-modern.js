@@ -196,6 +196,29 @@ $(document).ready(function() {
             $('#activeCallNumber').text(ctxSip.formatPhone(newSess.remoteIdentity.uri.user));
             $('#callTimer').text('00:00:00');
 
+            // Configurar captura de áudio remoto usando o evento trackAdded
+            newSess.on('trackAdded', function() {
+                console.log('Track added event fired.');
+                var remoteAudio = document.getElementById('audioRemote');
+                var pc = newSess.sessionDescriptionHandler.peerConnection;
+                var remoteStream = new MediaStream();
+                
+                pc.getReceivers().forEach(function(receiver) {
+                    if (receiver.track) {
+                        remoteStream.addTrack(receiver.track);
+                    }
+                });
+                
+                if (remoteStream.getTracks().length > 0) {
+                    remoteAudio.srcObject = remoteStream;
+                    remoteAudio.play().catch(function(e) {
+                        console.error('Erro ao reproduzir áudio remoto:', e);
+                    });
+                    ctxSip.Stream = remoteAudio;
+                    console.log('Áudio remoto anexado via trackAdded!');
+                }
+            });
+
             // EVENT CALLBACKS
 
             newSess.on('progress',function(e) {
