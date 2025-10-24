@@ -223,6 +223,22 @@ $(document).ready(function() {
                 ctxSip.logCall(newSess, 'answered');
                 ctxSip.callActiveID = newSess.ctxid; // Ensure callActiveID is set upon acceptance
                 
+                // Anexar o fluxo de áudio remoto ao elemento <audio> usando a API moderna
+                var remoteAudio = document.getElementById('audioRemote');
+                var pc = newSess.sessionDescriptionHandler.peerConnection;
+                
+                if (remoteAudio && pc) {
+                    pc.ontrack = function(event) {
+                        if (event.streams && event.streams[0]) {
+                            remoteAudio.srcObject = event.streams[0];
+                            remoteAudio.play().catch(function(e) {
+                                console.error('Erro ao reproduzir áudio remoto:', e);
+                            });
+                            ctxSip.Stream = remoteAudio;
+                        }
+                    };
+                }
+                
                 // Once call is accepted, hide answer button (if it was an incoming call)
                 $('#btnAnswer').hide();
                 // Ensure hangup button is visible for active call
