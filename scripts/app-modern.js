@@ -336,6 +336,8 @@ $(document).ready(function() {
                         }
                     }
                 });
+                // Chamada explícita para newSession para garantir a atualização da UI para chamadas de saída
+                ctxSip.newSession(session);
             }
         },
 
