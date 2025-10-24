@@ -132,13 +132,13 @@ $(document).ready(function() {
 
         // UI State Management
         showSplashScreen : function() {
-            console.log("Showing Splash Screen");
+            
             $('#sip-splash').addClass('active');
             $('#sip-active-call').removeClass('active');
         },
 
         showActiveCallScreen : function() {
-            console.log("Showing Active Call Screen");
+            
             $('#sip-splash').removeClass('active');
             $('#sip-active-call').addClass('active');
         },
@@ -160,6 +160,7 @@ $(document).ready(function() {
         },
 
         newSession : function(newSess) {
+            console.log("newSession called for direction: " + newSess.direction);
 
             newSess.displayName = newSess.remoteIdentity.displayName || newSess.remoteIdentity.uri.user;
             newSess.ctxid       = ctxSip.getUniqueID();
@@ -210,6 +211,7 @@ $(document).ready(function() {
             });
 
             newSess.on('accepted',function(e) {
+                console.log("Call Accepted event fired.");
                 // If there is another active call, hold it
                 if (ctxSip.callActiveID && ctxSip.callActiveID !== newSess.ctxid) {
                     ctxSip.phoneHoldButtonPressed(ctxSip.callActiveID);
@@ -272,6 +274,7 @@ $(document).ready(function() {
             });
 
             newSess.on('bye', function(e) {
+                console.log("Call Bye event fired.");
                 ctxSip.stopRingTone();
                 ctxSip.stopRingbackTone();
                 ctxSip.setCallSessionStatus("Desligado");
@@ -282,6 +285,7 @@ $(document).ready(function() {
             });
 
             newSess.on('failed',function(e) {
+                console.log("Call Failed event fired.");
                 ctxSip.stopRingTone();
                 ctxSip.stopRingbackTone();
                 ctxSip.setCallSessionStatus('Falhou');
@@ -307,7 +311,7 @@ $(document).ready(function() {
         },
 
         phoneCallButtonPressed : function() {
-            console.log("phoneCallButtonPressed called");
+            
             var num = $('#numDisplay').val();
 
             if (!num) { 
@@ -320,7 +324,7 @@ $(document).ready(function() {
 
             if (num.length > 0) {
                 // Lógica de chamada existente
-                console.log("Initiating call with number: " + num);
+                
                 var session = ctxSip.phone.invite(num, {
                     sessionDescriptionHandlerOptions: {
                         constraints: {
