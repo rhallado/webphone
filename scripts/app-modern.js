@@ -359,6 +359,9 @@ $(document).ready(function() {
                             audio: true,
                             video: false
                         },
+                        render: {
+                            remote: document.getElementById('audioRemote')
+                        },
                         RTCConstraints: {
                             "optional": [ {'DtlsSrtpKeyAgreement': 'true'} ]
                         }
@@ -389,6 +392,9 @@ $(document).ready(function() {
                         constraints: {
                             audio: true,
                             video: false
+                        },
+                        render: {
+                            remote: { audio: document.getElementById('audioRemote') }
                         },
                         RTCConstraints: {
                             optional: [ { 'DtlsSrtpKeyAgreement': 'true' } ]
